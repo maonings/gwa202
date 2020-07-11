@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>THE GREAT WALL</title>
+		<link rel="stylesheet" href="css/css.css" />
+		<link rel="stylesheet" href="css/responsive.css" />
+		<link rel="icon" type="image/x-icon" href='img/favicon.ico' />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="lang/lang.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/global.js"></script>
+		<script type="text/javascript" src="js/data.js"></script>
+		<script type="text/javascript" src="js/web3.min.js"></script>
+		<script type="text/javascript" src="js/truffle-contract.js"></script>
+		<script type="text/javascript" src="js/clipboard.min.js.js"></script>
+	</head>
+
+	<body>
+		<div id="app" v-cloak>
+			<!--statisticsTop start-->
+			<div class="statisticsTop">
+				<div class="container">
+					<div class="nav_btn" @click="getNavs">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+					<div class="nav">
+						<ul>
+							<li v-for="(value,index) in langList" @click="changeLang(index)">{{value}}</li>
+						</ul>
+					</div>
+
+					<div class="nav_mobile" v-show="showNav">
+						<div class="bg">
+							<ul>
+								<li v-for="(value,index) in langList" @click="changeLang(index)">{{value}}</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--statisticsTop end-->
+
+			<div class="block_box block_common">
+				<div class="container">
+					<h3 class="common_sub_title mb20 common_title">
+						<!-- <span class="left"></span> -->
+						<!-- {{langItem.income.dynamic_income}} -->
+						<!-- <span class="right"></span> -->
+						{{langItem.com.myFriends}}
+					</h3>
+					<!--rank，income，other start-->
+
+					<div class="block_list">
+						<div class="block_item income">  
+							<ul class="friends-list">
+								<li>
+									<span class="friends-id">{{langItem.ranking.id}}</span>
+									<span class="friends-money">{{langItem.ranking.ac_title}}</span>
+								</li>
+								<li v-for="(item,index) in myFriendsList">
+									<span class="friends-id">{{item.id}}</span>
+									<span class="friends-money">{{item.money}}</span>
+								</li>
+								<li v-if="myFriendsList.length == 0">
+									{{langItem.com.noData}}
+								</li>
+							</ul>
+						</div>
+						
+					</div>
+				</div>
+
+			</div>
+			<!--rank，income，other end-->
+
+			<pop-rank v-show="directPop" :title="{msg:langItem.ranking.rank10,rank:langItem.ranking.rank_title,achievement:langItem.ranking.ac_title,id:langItem.ranking.id}" :datafrom="rankData.direct.top10 "></pop-rank>
+			<pop-rank v-show="groupPop" :title="{msg:langItem.ranking.group10,rank:langItem.ranking.rank_title,achievement:langItem.ranking.ac_title,id:langItem.ranking.id}" :datafrom="rankData.group.top10 "></pop-rank>
+			<pop-rank v-show="seasonPop" :title="{msg:langItem.ranking.season60,rank:langItem.ranking.rank_title,achievement:langItem.ranking.ac_title,id:langItem.ranking.id}" :datafrom="rankData.season.top60 "></pop-rank>
+
+			
+		</div>
+		<script type="text/javascript " src="js/friends.js"></script>
+
+	</body>
+
+</html>

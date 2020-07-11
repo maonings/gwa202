@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-control" content="no-cache">
+		<meta http-equiv="Cache" content="no-cache">
+		<title>THE GREAT WALL</title>
+		<link rel="stylesheet" href="css/css.css" />
+		<link rel="stylesheet" href="css/responsive.css" />
+		<link rel="icon" type="image/x-icon" href='img/favicon.ico' />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="lang/lang.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/global.js"></script>
+		<script type="text/javascript" src="js/data.js"></script>
+		<script type="text/javascript" src="js/web3.min.js"></script>
+		<script type="text/javascript" src="js/truffle-contract.js"></script>
+		<script type="text/javascript" src="js/clipboard.min.js.js"></script>	
+        
+		
+	</head>
+
+	<body>
+		<div id="app" class="page" v-cloak>
+
+			<div class="header"><!--header start-->
+				
+				<div class="container">
+					<div class="nav_btn" @click="getNavs">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+
+					<div class="nav">
+						<ul>
+							<li v-for="(value,index) in langList" @click="changeLang(index)">{{value}}</li>
+						</ul>
+					</div>
+
+					<div class="nav_mobile" v-show="showNav">
+						<div class="bg">
+							<ul>
+								<li v-for="(value,index) in langList" @click="changeLang(index)">{{value}}</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="logo"><img src="img/logo-new.png"></div>
+					<!-- <div class="title"><span>{{langItem.com.title}}</span></div> -->
+
+				</div>
+
+			</div>
+			<!--header end-->
+
+			<div class="game block_common"><!--game start-->
+				
+				<div class="container">
+					<h3 class="game_title common_title"><span>{{langItem.game.title}}</span></h3>
+
+					<div class="common_intro game_intro">{{langItem.game.intro}}</div>
+
+					<div class="game_time">
+						<div class="countdown">{{langItem.game.countdown}}</div>
+						<div class="time" id="show"></div>
+						<!-- <div class="number">{{userData.futureEth | numFilter}} ETH</div> -->
+						<div class="number">{{userData.futureEth}} ETH</div>
+						<!-- <div class="history" @click="showPop('gameHistory')">{{langItem.game.viewHistory}}</div> -->
+					</div>
+					<div class="tab join_tab join">
+						<!-- <div class="title-box-two">
+							<span class="title-span">
+								{{langItem.game.join}}
+							</span>
+						</div> -->
+						<div class="clear"></div>
+							<!--join start-->
+					
+							<div class="title-box-two">
+								<span class="title-span">
+									{{langItem.com.balanceToken}}
+								</span>
+							</div>
+							<div class="tab_box">
+								<div class="item">
+									<!-- <ul>
+										<li v-for="(val,index) in gameData.joinItem" :class="joinNumber==val ?'cur':''" @click="getJoin(val)">{{index}}</li>
+									</ul>
+									<div class="clear"></div> -->
+									<div class="balance">
+									{{langItem.com.nowStage}}：{{langItem.com.angelFund}}，{{linkData.totalGwaLevel}}，1ETH={{linkData.gwaPrice}} GWA
+									</div>
+									<div class="balance">
+									{{langItem.com.nowRemaining}}：{{linkData.totalGwa}} GWA
+									</div>
+								</div>
+							
+								<div class="form_box">
+									
+									<!-- <div class="input_box"><input type="number" v-model.numbe="joinNumber"/></div> -->
+									<div class="input_box"><input id="gwaCount" type="number" v-model.numbe="joinNumber" v-on:input="joinNumberUp()"/></div>
+									<span>ETH</span>
+									<!-- <div class="count">{{langItem.game.need_tickets}}：<em>{{joinToken}}</em> GWA</div> -->
+									<div class="balance">{{langItem.com.balanceToken}}：<em>{{totalV | numFilter}}</em> GWA</div>
+									<div class="balance">{{langItem.com.tokenBalance}}：<em>{{gwaBalance | numFilter}}</em> GWA</div>
+									<!-- <div class="count">{{langItem.com.balance}} <em>{{gwaToEthBalance | numFilter}}</em> ETH</div>-->
+									<div class="balance">{{langItem.com.balance}}：<em>{{tokenBalance | numFilter}}</em> ETH</div>
+								</div>
+							</div>
+							<div class="sub_btn"><button @click="transferEth(joinNumber,1)" class="btn buy">{{langItem.game.buy}}</button></div>
+						
+						<!--join end-->
+					</div>
+				</div>
+			</div>
+			<!--game end-->
+       
+			<div class="join block_common">
+				<!--join start-->
+				<div class="container">
+					<h3 class="game_title common_title"><span>{{langItem.game.join_now}}</span></h3>
+					
+					<div class="tab join_tab">
+
+						<!-- <ul class="tab_nav">
+							<li :class="gameCurrent=='token'?'active':' '" @click="tabGame('token')">{{langItem.game.token}}</li>
+							<li :class="gameCurrent=='join'?'active':' '" @click="tabGame('join')">{{langItem.game.join}}</li>
+							<li :class="gameCurrent=='invite'?'active':' '" @click="tabGame('invite')">{{langItem.game.invite}}</li>
+							<li :class="gameCurrent=='rule'?'active':' '" @click="tabGame('rule')">{{langItem.com.rule}}</li>
+						</ul> -->
+						<div class="title-box-two">
+							<span class="title-span">
+								{{langItem.game.join}}
+							</span>
+						</div>
+						<div class="clear"></div>
+						
+						<div class="tab_box">
+							<!--join start-->
+
+							<div class="item">
+								<ul>
+									<li v-for="(val,index) in gameData.joinItemNew" :class="joinNumberNew==val ?'cur':''" @click="getJoinNew(val)">{{index}}</li>
+								</ul>
+								<div class="clear"></div>
+							</div>
+
+							<div class="form_box">
+								<div class="input_box"><input type="number" v-model.numbe="joinNumberNew" disabled="disabled"/></div>
+								<span>ETH</span>
+								<!-- <div class="count">{{langItem.game.need_tickets}}：<em>{{joinToken}}</em> GWA</div> -->
+								<div class="balance">{{langItem.com.balance}}：<em>{{tokenBalance | numFilter}}</em> ETH</div>
+							</div>
+							<div class="sub_btn"><button @click="transferEth(joinNumberNew,2)" class="btn buy">{{langItem.game.buy}}</button></div>
+						</div>
+						<!--join end-->
+					</div>
+					
+					<div class="tab join_tab">
+						<div class="title-box-two">
+							<span class="title-span">
+								{{langItem.game.invite}}
+							</span>
+						</div>
+						<div class="clear"></div>
+						<div class="tab_box">
+							<!--invite start-->
+							<div class="invite">
+								<ul>
+									<li>{{langItem.game.my_share}}：{{linkData.pid}}</li>
+									<li>{{langItem.game.share_count}}：{{linkData.recommend_num}}</li>
+									<li>{{langItem.game.invite_link}}：
+										<span id="foo">
+					                      {{getLink}}
+										</span>
+									</li>
+									<li>{{langItem.game.myID}}：{{linkData.id}}</li>
+									<li>{{langItem.game.myAddress}}：{{linkData.addr}}</li>
+								</ul>
+							</div>
+							<div class="sub_btn"><button @click="copy" class="btn copy" data-clipboard-target="#foo">{{langItem.game.copy}}</button></div>
+						</div>
+						<!--invite end-->
+					</div>
+					
+					<div class="tab join_tab rule">
+						<div class="title-box-two">
+							<span class="title-span">
+								{{langItem.game.rule}}
+							</span>
+						</div>
+						<div class="clear"></div>
+						<div class="tab_box">
+							<!--rules start-->
+							<div class="rules">
+								<h3 class="rules_title">{{langItem.game.rule_title}}</h3>
+								<div class="rule_text">{{langItem.game.rule_intro}}</div>
+							</div>
+						</div>
+						<!--rules end-->
+					
+					</div>
+				</div>
+			</div>
+			<!--join end-->
+			<!--rank start-->
+            <div class="block_box rank block_common">
+				<div class="container">
+					<h3 class="common_title three"><span>{{langItem.ranking.title}}</span></h3>
+					<div class="block_list">
+						<div class="block_item rank_bg">
+							<ul>
+								<li>
+									<span class="rank-no">
+										{{langItem.ranking.rank_title}}
+									</span>
+									<span class="rank-money">
+										{{langItem.ranking.ac_title}}
+									</span>
+									<span class="topView idCss">
+										{{langItem.ranking.id}}
+									</span>
+								</li>
+								<li v-for="(rankitem,index) in rankArr">
+									<span class="rank-no">
+										{{index+1>9?index+1:(index+1)}}
+									</span>
+									<span class="rank-money">
+										{{rankitem.money | numFilter}} ETH
+									</span>
+									<span class="topView idCss">
+										{{rankitem.user_id}}
+									</span>
+								</li>
+							</ul>
+                           <!-- <ul v-for="(rankitem,index) in rankArr">
+								<li>
+									<span class="topView idCss">
+										{{rankitem.user_id}}
+									</span>
+									<span style="margin-right: 50%;">
+										{{rankitem.money}} ETH
+									</span>
+									{{index+1>9?index+1:(index+1)}}
+								</li>
+							</ul> -->							
+						</div>	
+					</div>
+				</div>
+			</div>
+			<!--rank end-->
+			<div class="block_box block_common">
+				<div class="container">
+					<!--statistics start-->
+					<h3 class="common_title three"><span>{{langItem.statistics.statistics}}</span></h3>
+					<div class="block_list">						
+						<div class="block_item income">
+							
+							<div class="my_level">
+								<span>{{langItem.statistics.my_level}}：V{{userData.level}}  
+									<!-- <font v-if="otherData.myData.level==3">{{langItem.statistics.genesis_node}}</font>
+									<font v-if="otherData.myData.level==2">{{langItem.statistics.super_node}}</font>
+									<font v-if="otherData.myData.level==1">{{langItem.statistics.union_node}}</font> -->
+								</span>
+							</div>
+							<div class="item_box rank_bg">
+								<div class="common_box">								
+									<div class="common_item">
+										<h4 class="fbold">{{langItem.income.unsettled_income}}</h4>
+										<p>ETH：{{userData.noSettlementEth | numFilter}}</p>
+										<p>GWA：{{userData.noSettlementGwa | numFilter}}</p>
+										<!-- <p>
+											{{langItem.income.countDown}}：
+											<span v-if="investTime==0">{{langItem.com.noInvest}}</span>
+											<span v-else id="scoundDown"></span>
+										</p> -->
+										<p class="btns" v-if="userData.noSettlementEth > 0 || userData.noSettlementGwa >0" @click="transferEth(0,3)"><span>{{langItem.income.settle}}</span></p>
+									</div>
+									<div class="common_item">
+										<h4 class="fbold">{{langItem.income.gameReward_income}}</h4>
+										<p>ETH：{{userData.withdrawalEth | numFilter}}</p>
+										<p>GWA：{{userData.withdrawalGwa | numFilter}}</p>
+										<!-- <p>{{langItem.income.fee}}：{{getFee}} GWA</p> -->
+										<p class="btns" v-if="userData.withdrawalEth>0 || userData.withdrawalGwa >0" @click="transferEth(0,4)">
+											<span>{{langItem.income.gameReward}}</span>
+										</p>
+									</div>
+								</div>
+							</div>
+							<ul>
+								<!-- <li><span>{{userData.recommendNodeNum}}</span>{{langItem.statistics.direct_node}}</li>
+								<li>
+									<span>{{userData.recommendIncome | numFilter}} ETH</span>{{langItem.statistics.direct_achievement}}
+								</li> -->
+								<!-- <li><span>{{income.list.pool | numFilter}} ETH</span>{{langItem.income.prize_pool}}</li> -->
+								<li><span>{{userData.staticIncome | numFilter}} ETH</span>{{langItem.income.static_income}}</li>
+								<li><span>{{userData.dynamicIncome | numFilter}} ETH</span>{{langItem.income.dynamic_income}}</li>
+								<!-- <li><span>{{income.list.luckDraw | numFilter}} GWA</span>{{langItem.income.luck_draw}}</li>
+								<li><span>{{income.list.luckRecommend | numFilter}} GWA</span>{{langItem.income.luck_recommend}}</li> -->
+								<li><span>{{userData.settlementEth | numFilter}} ETH，{{userData.settlementGwa | numFilter}} GWA</span>{{langItem.income.total_settled}}</li>
+								<li><span>{{userData.surplusMoney | numFilter}} ETH</span>{{langItem.income.limit_income}}</li>
+								<li><span>{{userData.sellToken | numFilter}} GWA</span>{{langItem.statistics.ticket_sales}}</li>
+								<li><span>{{userData.burnToken | numFilter}} GWA</span>{{langItem.statistics.burn_down}}</li>
+								<li><span>{{userData.todayEth | numFilter}} ETH</span>{{langItem.statistics.today_eth}}</li>
+								<!-- <li><span>{{otherData.list.nextSeason | numFilter}} GWA</span>{{langItem.statistics.next_season}}</li>
+								
+								<li><span>{{otherData.list.v4Node}}</span>{{langItem.statistics.v4_node}}</li> -->
+							</ul>
+							
+							<div class="view_btn"><a href="stat.html">{{langItem.com.viewDetail}}</a></div>
+						</div>
+						
+					</div>
+				</div>
+
+			</div>
+			<!--statistics end-->
+
+			<div class="modal" v-show="gameHistory">
+				<!--game history start-->
+				<div class="modal_dialog">
+					<div class="modal_content">
+						<h3 class="modal_title">{{langItem.game.gameHistory}}</h3>
+						<div class="history_box">
+							<ul>
+								<li v-for="(value,index) in gameData.history">
+									<h3>{{langItem.com.the}} {{value.times}} {{langItem.com.period}}</h3> {{langItem.game.prizePool}}：{{value.pool}} ETH<br />
+									<span v-if="value.winnerID==0" class="red">{{langItem.game.noWinner}}</span>
+									<span v-else>{{langItem.game.winner}}：{{value.winner}}，{{langItem.game.get}} {{value.get}} ETH</span>
+								</li>
+
+							</ul>
+						</div>
+						<a href="javascript:void(0)" class="modal_close" @click="hidePop('gameHistory')">X</a>
+					</div>
+				</div>
+			</div>
+			<!--game history end-->
+
+
+			<pop-box v-show="directRules"   :title="langItem.ranking.share_title" :message="langItem.ranking.share_rule"></pop-box>
+			<pop-box v-show="smallRules"    :title="langItem.ranking.group_title" :message="langItem.ranking.group_rule"></pop-box>
+			<pop-box v-show="seasonRules"   :title="langItem.ranking.buy_title"   :message="langItem.ranking.season_rule"></pop-box>
+			<pop-box v-show="countError"    :title="langItem.com.tip" :message="langItem.com.count_error"></pop-box>
+			<pop-box v-show="sendError"     :title="langItem.com.tip" :message="langItem.com.send_error"></pop-box>
+			<!--<pop-box v-show="lotteryError"  :title="langItem.com.tip" :message="langItem.com.lotteryError"></pop-box>-->
+			<pop-box v-show="copySuccess"   :title="langItem.com.tip" :message="langItem.com.copySuccess"></pop-box>
+			<pop-box v-show="balanceError"  :title="langItem.com.tip" :message="langItem.com.balanceError"></pop-box>
+			<pop-box v-show="canPlay"       :title="langItem.com.tip" :message="langItem.game.canPlay"></pop-box>
+			<pop-box v-show="sdfBalanceError"  :title="langItem.com.tip" :message="langItem.com.sdfBalanceError"></pop-box>
+			
+			<pop-lotto v-show="lotteryError"  :title="langItem.com.tip" :message="langItem.com.lotteryError" :codes="lotteryCount"></pop-lotto>
+		</div>
+		<script type="text/javascript " src="js/app.js "></script>
+	</body>
+
+</html>
